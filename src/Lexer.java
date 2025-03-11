@@ -28,7 +28,8 @@ public class Lexer {
             } else if (input.charAt(pos) == '}') {
                 tokens.add(new Token(Token.Type.RCURLY, "}"));
                 pos++;
-            } else if (input.charAt(pos) == 'f' || input.charAt(pos) == 'g' || input.charAt(pos) == 'h') {
+            } else if (input.charAt(pos) == 'f' || input.charAt(pos) == 'g'
+                || input.charAt(pos) == 'h') {
                 tokens.add(new Token(Token.Type.FUNC, Character.toString(input.charAt(pos))));
                 pos++;
             } else if (input.charAt(pos) == '=') {

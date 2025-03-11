@@ -201,21 +201,28 @@ public class TriFactor implements Factor {
     public Expr dao() {
         Expr expr1 = (new Num(power.getPower())).simplify();
         expr1 = expr1.multiExpr(expr.dao());
-        expr1 = expr1.multiExpr(new TriFactor(kindName(), new ExprFactor(this.expr, new Power(BigInteger.ONE), functions), power.minusOne(), functions).simplify());
+        expr1 = expr1.multiExpr(new TriFactor(kindName(), new ExprFactor(this.expr,
+            new Power(BigInteger.ONE), functions), power.minusOne(), functions).simplify());
         if (kind == 0) {
             expr1 = expr1.multiExpr(new TriFactor("cos", new ExprFactor(this.expr,
-                    new Power(BigInteger.ONE), functions), new Power(BigInteger.ONE), functions).simplify());
+                new Power(BigInteger.ONE), functions),
+                new Power(BigInteger.ONE), functions).simplify());
         }
         else {
             expr1 = expr1.multiExpr(new TriFactor("sin", new ExprFactor(this.expr,
-                    new Power(BigInteger.ONE), functions), new Power(BigInteger.ONE), functions).simplify());
+                new Power(BigInteger.ONE), functions),
+                new Power(BigInteger.ONE), functions).simplify());
             expr1 = expr1.multiExpr(new Num(BigInteger.valueOf(-1)).simplify());
         }
         return expr1;
     }
 
     public String kindName() {
-        if (kind == 0) return "sin";
-        else return "cos";
+        if (kind == 0) {
+            return "sin";
+        }
+        else {
+            return "cos";
+        }
     }
 }

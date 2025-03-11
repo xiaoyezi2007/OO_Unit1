@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 
 public class DaoFactor implements Factor {
-    ArrayList<DefinedFunction> functions;
-    Expr expr;
+    private ArrayList<DefinedFunction> functions;
+    private Expr expr;
 
     public DaoFactor(Expr expr, ArrayList<DefinedFunction> functions) {
         this.expr = expr;
         this.functions = functions;
     }
+
     @Override
     public void addFunc(ArrayList<DefinedFunction> functions) {
         this.functions = functions;
