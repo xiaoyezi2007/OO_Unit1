@@ -98,7 +98,7 @@ public class Term {
             else if (factor.getFactorType().equals("TriFactor")
                 && ((TriFactor) factor).isMinusFactor()) {
                 factor.addSign(-1);
-                if (((TriFactor) factor).isSin()) {
+                if (((TriFactor) factor).isSin() && !((TriFactor) factor).isPowerEven()) {
                     sig *= -1;
                 }
             }
