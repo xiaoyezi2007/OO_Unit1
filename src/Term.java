@@ -369,11 +369,15 @@ public class Term {
 
     public Expr dao() {
         Expr ans = new Expr(functions);
+        ArrayList<Expr> sim = new ArrayList<>();
+        for (Factor factor : factors) {
+            sim.add(factor.simplify());
+        }
         for (int i = 0; i < factors.size(); i++) {
             Expr expr = factors.get(i).dao();
             for (int j = 0; j < factors.size(); j++) {
                 if (j != i) {
-                    expr = expr.multiExpr(factors.get(j).simplify());
+                    expr = expr.multiExpr(sim.get(j));
                 }
             }
             ans = ans.plusExpr(expr);

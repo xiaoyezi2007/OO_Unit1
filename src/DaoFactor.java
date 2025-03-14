@@ -21,7 +21,7 @@ public class DaoFactor implements Factor {
 
     @Override
     public Expr simplify() {
-        return expr.dao();
+        return expr.simplify().dao();
     }
 
     @Override
