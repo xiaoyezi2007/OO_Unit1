@@ -83,7 +83,9 @@ public class Expr {
                 }
             }
             if (use == null) {
-                expr.addTerm(termIn);
+                if (!termIn.findNum().isZero()) {
+                    expr.addTerm(termIn);
+                }
             }
             else {
                 expr.removeTerm(use);
@@ -188,6 +190,6 @@ public class Expr {
         for (Term term : terms) {
             expr = expr.plusExpr(term.dao());
         }
-        return expr;
+        return expr.simplify();
     }
 }
