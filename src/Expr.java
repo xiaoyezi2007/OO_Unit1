@@ -124,7 +124,7 @@ public class Expr {
     }
 
     public boolean isZero() {
-        Expr ans = this.simplify();
+        Expr ans = this;
         if (ans.terms.isEmpty()) {
             return true;
         }
