@@ -150,10 +150,10 @@ public class Parser {
         lexer.nextToken();
         if (!lexer.isEnd() && lexer.getCurToken().getType() == Token.Type.POWER) {
             Power power = parsePower();
-            triFactor = new TriFactor(Tri, factor, power, functions);
+            triFactor = new TriFactor(Tri, factor.simplify(), power, functions);
         }
         else {
-            triFactor = new TriFactor(Tri, factor, new Power(BigInteger.ONE), functions);
+            triFactor = new TriFactor(Tri, factor.simplify(), new Power(BigInteger.ONE), functions);
         }
         return triFactor;
     }

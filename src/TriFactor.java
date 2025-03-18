@@ -7,7 +7,7 @@ public class TriFactor implements Factor {
     private Power power = null;
     private ArrayList<DefinedFunction> functions = new ArrayList<>();
 
-    public TriFactor(String name, Factor factor, Power power,
+    public TriFactor(String name, Expr expr, Power power,
         ArrayList<DefinedFunction> functions) {
         if (name.equals("sin")) {
             this.kind = 0;
@@ -15,7 +15,7 @@ public class TriFactor implements Factor {
         else {
             this.kind = 1;
         }
-        this.expr = factor.simplify();
+        this.expr = expr;
         this.power = power;
         this.functions = functions;
     }
@@ -137,24 +137,22 @@ public class TriFactor implements Factor {
     @Override
     public Factor clone() {
         if (kind == 0) {
-            return new TriFactor("sin", new ExprFactor(this.expr,
-                new Power(BigInteger.ONE), functions), power.clone(), functions);
+            return new TriFactor("sin", this.expr.clone(), power.clone(), functions);
         }
         else {
-            return new TriFactor("cos", new ExprFactor(this.expr,
-                new Power(BigInteger.ONE), functions), power.clone(), functions);
+            return new TriFactor("cos", this.expr.clone(), power.clone(), functions);
         }
     }
 
     @Override
     public Factor replace(ArrayList<Var> var, ArrayList<Factor> factor) {
         if (kind == 0) {
-            return new TriFactor("sin", new ExprFactor(this.expr.replace(var, factor),
-                new Power(BigInteger.ONE), functions), power.clone(), functions);
+            return new TriFactor("sin", this.expr.replace(var, factor).simplify()
+                    , power.clone(), functions);
         }
         else {
-            return new TriFactor("cos", new ExprFactor(this.expr.replace(var, factor),
-                new Power(BigInteger.ONE), functions), power.clone(), functions);
+            return new TriFactor("cos", this.expr.replace(var, factor).simplify()
+                    , power.clone(), functions);
         }
     }
 
@@ -201,17 +199,15 @@ public class TriFactor implements Factor {
     public Expr dao() {
         Expr expr1 = (new Num(power.getPower())).simplify();
         expr1 = expr1.multiExpr(expr.dao());
-        expr1 = expr1.multiExpr(new TriFactor(kindName(), new ExprFactor(this.expr,
-            new Power(BigInteger.ONE), functions), power.minusOne(), functions).simplify());
+        expr1 = expr1.multiExpr(new TriFactor(kindName(), this.expr.clone()
+                , power.minusOne(), functions).simplify());
         if (kind == 0) {
-            expr1 = expr1.multiExpr(new TriFactor("cos", new ExprFactor(this.expr,
-                new Power(BigInteger.ONE), functions),
-                new Power(BigInteger.ONE), functions).simplify());
+            expr1 = expr1.multiExpr((new TriFactor("cos", this.expr.clone(),
+                new Power(BigInteger.ONE), functions)).simplify());
         }
         else {
-            expr1 = expr1.multiExpr(new TriFactor("sin", new ExprFactor(this.expr,
-                new Power(BigInteger.ONE), functions),
-                new Power(BigInteger.ONE), functions).simplify());
+            expr1 = expr1.multiExpr((new TriFactor("sin", this.expr.clone(),
+                new Power(BigInteger.ONE), functions)).simplify());
             expr1 = expr1.multiExpr(new Num(BigInteger.valueOf(-1)).simplify());
         }
         return expr1;
