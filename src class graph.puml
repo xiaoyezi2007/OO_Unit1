@@ -1,0 +1,340 @@
+@startuml
+class Sign {
+- int sig
++ int getSign()
+}
+
+
+class Lexer {
+- ArrayList<Token> tokens
+- int index
+- int pos
++ Token getCurToken()
++ void nextToken()
++ boolean isEnd()
++ void checkStyle(String)
+}
+
+
+class DefinedFunction {
+- HashMap<Integer,Expr> exprs
+- ArrayList<Num> nums
+- ArrayList<Var> vars
+- ArrayList<FunctionFactor> funcFactors
+- Var funcName
+- ArrayList<Expr> init
++ void addFuncFactor(FunctionFactor)
++ void addFuncName(Var)
++ void addVar(Var)
++ void addNum(Num)
++ void addExpr(Integer,Expr)
++ Var getFuncName()
++ void initial()
++ Expr calExpr(int,ArrayList<Factor>)
+}
+
+
+class TriFactor {
+- int kind
+- Expr expr
+- Power power
+- ArrayList<DefinedFunction> functions
++ int equalWithoutPower(TriFactor)
++ boolean addAsOne(TriFactor)
++ TriFactor shared(TriFactor)
++ void setPower(Power)
++ boolean isPowerEven()
++ TriFactor div(TriFactor)
++ boolean powerEqual(TriFactor)
++ void addFunc(ArrayList<DefinedFunction>)
++ void print()
++ boolean isMinusFactor()
++ boolean isSin()
++ Expr simplify()
++ String getFactorType()
++ Factor clone()
++ Factor replace(ArrayList<Var>,ArrayList<Factor>)
++ boolean equal(Factor)
++ boolean minusEqual(Factor)
++ boolean isMulti(Factor)
++ void multi(Factor)
++ void addSign(int)
++ Expr dao()
++ String kindName()
+}
+
+
+class Num {
+- BigInteger value
+- ArrayList<DefinedFunction> functions
++ BigInteger getValue()
++ void addSign(int)
++ Expr dao()
++ void add(Num)
++ void sub(Num)
++ void multi(Num)
++ void multi(Factor)
++ boolean lessThan(Num)
++ boolean sameSign(Num)
++ boolean isZero()
++ boolean isNegative()
++ boolean isPositive()
++ boolean absoluteIsOne()
++ boolean isOne()
++ boolean isMinusOne()
++ String toString()
++ void addFunc(ArrayList<DefinedFunction>)
++ void print()
++ void print(Boolean)
++ Expr simplify()
++ String getFactorType()
++ Factor clone()
++ Factor replace(ArrayList<Var>,ArrayList<Factor>)
++ boolean equal(Factor)
++ boolean minusEqual(Factor)
++ boolean isMulti(Factor)
+}
+
+
+class Power {
+- BigInteger power
++ BigInteger getPower()
++ boolean lessThan(Power)
++ boolean isZero()
++ boolean isEven()
++ boolean isSquare()
++ Power minusOne()
++ int min(Power)
++ boolean equals(Power)
++ void add(Power)
++ void sub(Power)
++ Power clone()
++ void print()
+}
+
+
+class Parser {
+- Lexer lexer
+- ArrayList<Lexer> lexers
+- ArrayList<DefinedFunction> functions
++ void addFunc(ArrayList<DefinedFunction>)
++ void addLexer(ArrayList<Lexer>)
++ DefinedFunction parseSimFunc(ArrayList<DefinedFunction>)
++ DefinedFunction parseFunc(ArrayList<DefinedFunction>)
++ Expr parseExpr(ArrayList<DefinedFunction>)
++ Term parseTerm(ArrayList<DefinedFunction>)
++ Factor parseFactor(ArrayList<DefinedFunction>)
++ DaoFactor parseDaoFactor(ArrayList<DefinedFunction>)
++ TriFactor parseTriFactor(ArrayList<DefinedFunction>)
++ FunctionFactor parseFuncFactor(ArrayList<DefinedFunction>)
++ Num parseNum(ArrayList<DefinedFunction>)
++ PowerFactor parsePowerFactor(ArrayList<DefinedFunction>)
++ ExprFactor parseExprFactor(ArrayList<DefinedFunction>)
++ Var parseVar()
++ Power parsePower()
++ Sign parseSign()
+}
+
+
+class Var {
+- String name
++ String getName()
++ boolean equals(Var)
++ Var clone()
++ void print()
+}
+
+
+class FunctionFactor {
+- String num
+- ArrayList<Factor> factors
+- Var funcName
+- ArrayList<DefinedFunction> functions
++ void addFunc(ArrayList<DefinedFunction>)
++ void addNum(String)
++ void addFactor(Factor)
++ ArrayList<Factor> getFactors()
++ void print()
++ Expr simplify()
++ String getFactorType()
++ Factor clone()
++ Factor replace(ArrayList<Var>,ArrayList<Factor>)
++ boolean equal(Factor)
++ boolean minusEqual(Factor)
++ boolean isMulti(Factor)
++ void multi(Factor)
++ void addSign(int)
++ Expr dao()
+}
+
+
+class MainClass {
++ {static} void main(String[])
+}
+
+interface Factor {
+~ void addFunc(ArrayList<DefinedFunction>)
+~ void print()
+~ Expr simplify()
+~ String getFactorType()
+~ Factor clone()
+~ Factor replace(ArrayList<Var>,ArrayList<Factor>)
+~ boolean equal(Factor)
+~ boolean minusEqual(Factor)
+~ boolean isMulti(Factor)
+~ void multi(Factor)
++ void addSign(int)
++ Expr dao()
+}
+
+class Input {
+- Expr expr
+- ArrayList<DefinedFunction> funcs
++ Expr target()
+}
+
+
+class Expr {
+- ArrayList<Term> terms
+- ArrayList<DefinedFunction> functions
++ void addSign(int)
++ void addTerm(Term)
++ void addFunc(DefinedFunction)
++ void addFunction(ArrayList<DefinedFunction>)
++ void removeTerm(Term)
++ Expr simplify()
++ Expr plusExpr(Expr)
++ Expr multiExpr(Expr)
++ Expr combine()
++ void print()
++ boolean isZero()
++ Expr replace(ArrayList<Var>,ArrayList<Factor>)
++ boolean equals(Expr)
++ boolean minusEqual(Expr)
++ boolean isFactor()
++ boolean isMinusFactor()
++ Expr clone()
++ Expr dao()
+}
+
+
+class DaoFactor {
+- ArrayList<DefinedFunction> functions
+- Expr expr
++ void addFunc(ArrayList<DefinedFunction>)
++ void print()
++ Expr simplify()
++ String getFactorType()
++ Factor clone()
++ Factor replace(ArrayList<Var>,ArrayList<Factor>)
++ boolean equal(Factor)
++ boolean minusEqual(Factor)
++ boolean isMulti(Factor)
++ void multi(Factor)
++ void addSign(int)
++ Expr dao()
+}
+
+
+class Token {
+- Type type
+- String content
++ Type getType()
++ String getContent()
++ Boolean isSign()
+}
+
+
+enum Type {
++  ADD
++  MUL
++  LPAREN
++  RPAREN
++  NUM
++  VAR
++  DAO
++  MINUS
++  POWER
++  COMMA
++  LCURLY
++  RCURLY
++  FUNC
++  EQUAL
++  RECURVAR
++  SIN
++  COS
+}
+
+class PowerFactor {
+- Power power
+- Var var
+- ArrayList<DefinedFunction> functions
++ void addFunc(ArrayList<DefinedFunction>)
++ void print()
++ Expr simplify()
++ String getFactorType()
++ Factor clone()
++ Factor replace(ArrayList<Var>,ArrayList<Factor>)
++ boolean equal(Factor)
++ boolean minusEqual(Factor)
++ boolean isMulti(Factor)
++ void multi(Factor)
++ void addSign(int)
++ Expr dao()
+}
+
+
+class Term {
+- ArrayList<Factor> factors
+- ArrayList<DefinedFunction> functions
+- int sign
++ void addFactor(Factor)
++ void addSign(int)
++ void addFunc(ArrayList<DefinedFunction>)
++ void addSignIn()
++ Term multi(Term)
++ Expr Simplify()
++ Num findNum()
++ Term clone()
++ boolean print(boolean)
++ Term replace(ArrayList<Var>,ArrayList<Factor>)
++ boolean isFactor()
++ boolean isMinusFactor()
++ int solvePowerFactor(ArrayList<Factor>,Factor,ArrayList<Factor>)
++ ArrayList<Integer> solveTriFactor(Factor,ArrayList<Factor>,ArrayList<Factor>,ArrayList<Factor>,int,int)
++ ArrayList<Term> integrate(Num,Term,Num)
++ ArrayList<Term> solveEmpty(ArrayList<Factor>,Num,Num,int,int)
++ ArrayList<Term> solveAddAsOne(Num,Num,Term,Term,ArrayList<Factor>,ArrayList<Factor>)
++ ArrayList<Term> integrateAns(ArrayList<Factor>,ArrayList<Factor>,ArrayList<Factor>,Num,Num,int,int)
++ Expr dao()
+}
+
+
+class ExprFactor {
+- Expr expr
+- Power power
+- ArrayList<DefinedFunction> functions
++ void addFunc(ArrayList<DefinedFunction>)
++ void print()
++ Expr simplify()
++ String getFactorType()
++ Factor clone()
++ Factor replace(ArrayList<Var>,ArrayList<Factor>)
++ boolean equal(Factor)
++ boolean minusEqual(Factor)
++ boolean isMulti(Factor)
++ void multi(Factor)
++ void addSign(int)
++ Expr dao()
+}
+
+
+
+
+Factor <|.. TriFactor
+Factor <|.. Num
+Factor <|.. FunctionFactor
+Factor <|.. DaoFactor
+Factor <|.. PowerFactor
+Factor <|.. ExprFactor
+@enduml
